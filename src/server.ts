@@ -7,7 +7,7 @@ app.post(port, (req: Request, res: Response) => {
     try{
        res.send("good")
     }catch(err) {
-
+         console.log(err);
     }
 })
 
