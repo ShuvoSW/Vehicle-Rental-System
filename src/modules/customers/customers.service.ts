@@ -9,3 +9,7 @@ const createCustomer = async (payload: Record<string, unknown>) => {
     return result;
 
 }
+
+export const customerServices = {
+    createCustomer
+}
