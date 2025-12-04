@@ -1,7 +1,12 @@
 import express, { Request, Response } from "express";
 const app = express()
+import { Pool } from "pg"
+import config from "./config";
+const port = config.port;
 
-const port = "5000"
+const pool = new Pool({
+    connectionString: `${config.connection_str}`
+})
 
 app.post(port, (req: Request, res: Response) => {
     try{
