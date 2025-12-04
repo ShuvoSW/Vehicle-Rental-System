@@ -4,9 +4,7 @@ import { Pool } from "pg"
 import config from "./config";
 const port = config.port;
 
-const pool = new Pool({
-    connectionString: `${config.connection_str}`
-})
+
 
 app.post(port, (req: Request, res: Response) => {
     try{
