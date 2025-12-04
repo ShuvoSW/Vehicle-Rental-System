@@ -18,3 +18,7 @@ const createCustomer = async (req: Request, res: Response) => {
 
     }
 }
+
+export const customersControllers = {
+    createCustomer
+}
