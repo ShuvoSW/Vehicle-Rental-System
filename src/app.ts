@@ -12,9 +12,9 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello")
 })
 
-app.use("/users", userRoutes)
+app.use("/api/v1/users", userRoutes)
 
-app.use("/auth", userRoutes)
+app.use("api/v1/auth", userRoutes)
 
 app.use((req, res) => {
     res.status(404).json({
