@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { customerServices } from "./customers.service";
+import { userServices } from "./customers.service";
 
-const createCustomer = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
     try{
-        const result = await customerServices.createCustomer(req.body);
+        const result = await userServices.createUser(req.body);
 
         return res.status(201).json({
             success: false,
@@ -19,6 +19,6 @@ const createCustomer = async (req: Request, res: Response) => {
     }
 }
 
-export const customersControllers = {
-    createCustomer
+export const usersControllers = {
+    createUser
 }

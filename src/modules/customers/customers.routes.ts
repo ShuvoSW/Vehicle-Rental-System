@@ -1,7 +1,7 @@
 import express from "express";
-import { customersControllers } from "./customers.controller";
+import { usersControllers } from "./customers.controller";
 const router = express.Router()
 
-router.post("/", customersControllers.createCustomer);
+router.post("/", usersControllers.createUser);
 
 export const customersRoutes = router;

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../config/db";
-const createCustomer = async (payload: Record<string, unknown>) => {
+const createUser = async (payload: Record<string, unknown>) => {
     const {name, role, email, password} = payload;
     
     const hashedPass = await bcrypt.hash(password as string, 10)
@@ -10,6 +10,6 @@ const createCustomer = async (payload: Record<string, unknown>) => {
 
 }
 
-export const customerServices = {
-    createCustomer
+export const userServices = {
+    createUser
 }
