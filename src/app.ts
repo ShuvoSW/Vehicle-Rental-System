@@ -14,6 +14,8 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/users", userRoutes)
 
+app.use("/auth", userRoutes)
+
 app.use((req, res) => {
     res.status(404).json({
         success: false,
