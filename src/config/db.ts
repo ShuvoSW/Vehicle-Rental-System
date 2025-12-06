@@ -10,14 +10,22 @@ const initDB = async () => {
         CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,   
+        email VARCHAR(150) NOT NULL UNIQUE LOWERCASE,
+        password TEXT NOT NULL ,
+        phone VARCHAR(15) NOT NULL,
         role VARCHAR(50) NOT NULL,
-        email VARCHAR(150) UNIQUE NULL,
-        password TEXT NOT NULL,
-        phone VARCHAR(15),
-        created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW()
         )
         `)
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS vehicles(
+        id SERIAL PRIMARY KEY,
+        vehicle_name VARCHAR(100) NOT NULL,
+        type VARCHAR(50) NOT NULL,
+        registration_number VARCHAR(50) UNIQUE NOT NULL,
+        daily_rent_price  NUMERIC(10,2) NOT NULL POSITIVE,
+        availability_status BOOLEAN DEFAULT AVAILABLE"
+        )
+        `)    
 }
 
 export default initDB;
