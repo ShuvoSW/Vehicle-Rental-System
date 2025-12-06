@@ -1,8 +1,5 @@
-import express from "express";
+import app from "./app";
 import config from "./config";
-
-const app = express()
-app.use(express.json())
 
 const port = config.port;
 
