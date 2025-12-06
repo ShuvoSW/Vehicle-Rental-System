@@ -1,11 +1,11 @@
-import { Request, Response, Router } from "express"
+import { Request, Response } from "express"
 import { authServices } from "./auth.service";
 
 const loginUser = async (req: Request, res: Response) => {
-    const {emil, password} = req.body;
+    const {email, password} = req.body;
 
     try{
-        const result = await authServices.loginUser(emil, password);
+        const result = await authServices.loginUser(email, password);
         res.status(200).json({
             success: false,
             message: "Login Successful",
