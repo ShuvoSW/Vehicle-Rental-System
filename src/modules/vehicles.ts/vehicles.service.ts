@@ -1,3 +1,4 @@
+import { Response } from "express";
 import { pool } from "../../config/DB";
 
 const createVehicleDB = async (payload: Record<string, any>) => {
@@ -7,7 +8,7 @@ const createVehicleDB = async (payload: Record<string, any>) => {
     return result;
 }
 const getallVehicleDB = async () => {
-    const result = await pool.query(`SELECT * FROM vehicles*`)
+    const result = await pool.query(`SELECT * FROM vehicles`)
     return result;
 }
 const getSingleVehicleDB = async (id: any) => {
@@ -19,18 +20,21 @@ const updateVehicleDB = async (payload: Record<string, any>) => {
     const result = await pool.query(`UPDATE vehicles SET vehicle_name=$1, type=$2, registration_number=$3, daily_rent_price=$4, availability_status=$5 WHERE id=$6 RETURNING*`, [vehicle_name, type, registration_number, daily_rent_price, availability_status, payload.params.id])
     return result;
 }
-const deleteVehicleDB = async (id: string | undefined) => {
-    const result = await pool.query(`DELETE FROM vehicles WHERE id=$1 RETURNING*`, [id])
-    return result;
+
+const deleteVehicleDB = async (id: string | undefined, res: Response) =>{
+    const getallVehicle = await pool.query(`SELECT * FROM vehicles WHERE id=$1`, [id])
+    if (getallVehicle.rows.length > 0 && getallVehicle.rows[0].availability_status == 'booked') {
+        return res.status(400).json({
+            message: 'Cannot delete vehicle: It has active bookings'
+        })
+    }
 }
 
+    export const vehicleService = {
+        createVehicleDB,
+        getallVehicleDB,
+        getSingleVehicleDB,
+        updateVehicleDB,
+        deleteVehicleDB,
 
-
-export const vehicleService = {
-    createVehicleDB,
-    getallVehicleDB,
-    getSingleVehicleDB,
-    updateVehicleDB,
-    deleteVehicleDB,
-
-}
+    }
