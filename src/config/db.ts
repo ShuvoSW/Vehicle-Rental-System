@@ -1,45 +1,50 @@
-import { Pool } from "pg";
-import config from ".";
+import { Pool } from "pg"
+import config from "."
 
 export const pool = new Pool({
-    connectionString: `${config.connection_str}`
+    connectionString: `${config.CONNECTION_STR}`
 })
 
-const initDB = async () => {
+export const initDB = async () => {
     await pool.query(`
         CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,   
-        email VARCHAR(150) NOT NULL UNIQUE LOWERCASE,
-        password TEXT NOT NULL ,
-        phone VARCHAR(15) NOT NULL,
-        role VARCHAR(50) NOT NULL,
+        name VARCHAR(200) NOT NULL,
+        email VARCHAR(200) UNIQUE NOT NULL CHECK (email=LOWER(email)),
+        password TEXT NOT NULL,
+        phone VARCHAR(20) NOT NULL,
+        role VARCHAR(100)
         )
         `)
-    // await pool.query(`
-    //     CREATE TABLE IF NOT EXISTS vehicles(
-    //     id SERIAL PRIMARY KEY,
-    //     vehicle_name VARCHAR(100) NOT NULL,
-    //     type VARCHAR(50) NOT NULL,
-    //     registration_number VARCHAR(50) UNIQUE NOT NULL,
-    //     daily_rent_price  NUMERIC(10,2) NOT NULL POSITIVE,
-    //     availability_status
-    //     )
-    //     `)
-    //     await pool.query(`
-    //         CREATE TABLE IF NOT EXISTS bookings(
-    //         id SERIAL PRIMARY KEY,
-    //         customer_id INT REFERENCES users(id) on DELETE CASCADE,
-    //         vehicle_id INT REFERENCES vehicles(id) on DELETE CASCADE,
-    //         rent_start_date DATE NOT NULL,
-    //         rent_start_date DATE NOT NULL,
-    //         rent_end_date DATE NOT NULL,
-    //         total_price NUMERIC(10,2) NOT NULL POSITIVE,
-    //         status VARCHAR(50) 
-    //       )
-    //         `)    
+    await pool.query(`
+             CREATE TABLE IF NOT EXISTS vehicles(
+        id SERIAL PRIMARY KEY,
+        vehicle_name VARCHAR(200) NOT NULL,
+        type VARCHAR(50)CHECK (type IN('car', 'bike', 'van','SUV')),
+        registration_number TEXT UNIQUE NOT NULL ,
+        daily_rent_price NUMERIC NOT NULL CHECK (daily_rent_price >0),
+        availability_status	 VARCHAR(60) NOT NULL CHECK (availability_status IN('available','booked'))
+        
+        )
+         `)
+
+    await pool.query(`
+                         CREATE TABLE IF NOT EXISTS bookings(
+                         id SERIAL PRIMARY KEY,
+                         customer_id INT REFERENCES users(id) ON DELETE CASCADE,
+                         vehicle_id INT REFERENCES vehicles(id) ON DELETE CASCADE,
 
 
+                         rent_start_date DATE NOT NULL,
+                         rent_end_date DATE NOT NULL ,
+                          CHECK (rent_start_date < rent_end_date),
+
+                         total_price NUMERIC NOT NULL CHECK (total_price > 0),
+
+                         status VARCHAR(50) CHECK (status IN('active', 'cancelled', 'returned')) DEFAULT 'active' 
+
+
+                         )
+
+            `)
 }
-
-export default initDB;

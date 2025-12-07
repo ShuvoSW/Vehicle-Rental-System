@@ -1,8 +1,8 @@
-import app from "./app";
-import config from "./config";
+import app from "./app"
+import config from "./config"
 
-const port = config.port;
+const port = config.PORT
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+    console.log(`app listen on port ${port}`)
 })

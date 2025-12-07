@@ -1,28 +1,34 @@
-import express, { Request, Response } from "express"
-import { userRoutes } from "./modules/user/user.routes";
-import initDB from "./config/db";
-import { authRoutes } from "./modules/auth/auth.routes";
+import express from "express"
+import { initDB } from "./config/DB";
+import { authRouter } from "./modules/auth.ts/auth.route";
+import { userRouter } from "./modules/users/user.route";
+import { vehicleRouter } from "./modules/vehicles.ts/vehicles.route";
+import { bookingRouter } from "./modules/bookings.ts/booking.route";
+import config from "./config";
 
 const app = express()
+const port = config.PORT;
+app.use(express.json())
 
-app.use(express.json());
+app.get('/', (req, res) => {
+    res.send("server is running")
+})
+
 
 initDB()
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("Hello")
-})
 
-app.use("/api/v1/users", userRoutes)
+app.use('/',authRouter)
 
-app.use("api/v1/auth", authRoutes)
 
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: "Route not found",
-        path: req.path,
-    })
-})
+app.use('/',userRouter)
+
+
+app.use('/',vehicleRouter)
+
+
+app.use('/',bookingRouter)
+
+
 
 export default app;
