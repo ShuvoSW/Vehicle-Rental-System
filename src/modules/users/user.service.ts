@@ -27,7 +27,15 @@ const updateUserDB = async (data: Record<string, unknown>, user: any, id: any, r
     }
     return result;
 }
-const deleteUserDB = async (id: any) => {
+const deleteUserDB = async (id: any,res:Response) => {
+
+     const  booking = await pool.query(`SELECT * FROM bookings WHERE customer_id=$1`, [id])
+      if(booking.rows.length>0){
+          return res.status(400).json({
+            success:false,
+            message:'user not delete because user booking a vehicles'
+        })
+      }
 
     const result = await pool.query(`DELETE FROM users WHERE id=$1 RETURNING*`, [id])
     return result;
